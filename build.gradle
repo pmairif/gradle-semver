@@ -1,0 +1,39 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.10.0'
+}
+
+group 'de.highbyte_le'
+version '1.0'
+sourceCompatibility = 1.8
+
+gradlePlugin {
+    plugins {
+        semVerPlugin {
+            id = 'de.highbyte_le.semver'
+            implementationClass = 'de.highbyte_le.semver.SemVerPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/pmairif/gradle-semver'
+    vcsUrl = 'https://github.com/pmairif/gradle-semver'
+    description = 'Read semantic versioning file and set project version accordingly.'
+    tags = ['semver', 'version']
+
+    plugins {
+        semVerPlugin {
+            displayName = 'SemVer plugin'
+        }
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
