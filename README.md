@@ -41,7 +41,8 @@ semver {
  
 ## License
 
-The code is distributed under the terms of the Apache License (ALv2). See the `LICENSE` file.
+The code is distributed under the terms of the Apache License (ALv2). See the [`LICENSE`][3] file.
 
 [1]: https://github.com/flazz/semver
 [2]: https://github.com/haf/semver
+[3]: https://github.com/pmairif/gradle-semver/blob/master/LICENSE
