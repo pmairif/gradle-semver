@@ -1,11 +1,13 @@
 plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.10.0'
+    id 'de.highbyte_le.semver' version '1.0'
 }
 
 group 'de.highbyte_le'
-version '1.0'
 sourceCompatibility = 1.8
+
+jar.dependsOn readSemVer
 
 gradlePlugin {
     plugins {
