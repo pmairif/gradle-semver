@@ -11,7 +11,7 @@ or another task that needs the project version to be set:
 
 ```gradle
 plugins {
-    id 'de.highbyte_le.semver' version '1.0'
+    id 'de.highbyte_le.semver' version '1.1'
 }
 
 task printVersion {
@@ -27,7 +27,7 @@ For a java build that would be:
 ```gradle
 plugins {
     id 'java'
-    id 'de.highbyte_le.semver' version '1.0'
+    id 'de.highbyte_le.semver' version '1.1'
 }
 
 jar.dependsOn readSemVer
@@ -42,7 +42,19 @@ semver {
     semverPath = project.layout.projectDirectory.file('../.semver')
 }
 ```
- 
+
+In case, you don't want the project version to be changed, you can read the version into a separate
+variable:
+```gradle
+semver {
+    versionProperty = 'foo'
+}
+task printVersion {
+    doLast { println(project.foo) }
+}
+printVersion.dependsOn readSemVer
+``` 
+
 ## License
 
 The code is distributed under the terms of the Apache License (ALv2). See the [`LICENSE`][3] file.
