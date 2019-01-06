@@ -9,6 +9,7 @@ public class SemVerPlugin implements Plugin<Project> {
 		SemVerPluginExtension extension = project.getExtensions().create("semver", SemVerPluginExtension.class, project);
 		project.getTasks().create("readSemVer", ReadSemVerTask.class, (task) -> {
 			task.setSemverPath(extension.getSemverPath());
+			task.setVersionProperty(extension.getVersionProperty());
 		});
 	}
 }
