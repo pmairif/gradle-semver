@@ -5,6 +5,8 @@ import org.gradle.api.file.RegularFile;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.TaskAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ReadSemVerTask extends DefaultTask {
+	private static final Logger logger =  LoggerFactory.getLogger(ReadSemVerTask.class);
+
 	private RegularFileProperty semverPath = getProject().getLayout().fileProperty();
 
 	/**
@@ -26,12 +30,15 @@ public class ReadSemVerTask extends DefaultTask {
 	public void applyVersion() throws IOException {
 		final String version = readSemVer(semverPath.get().getAsFile());
 		if (version != null && !version.isEmpty()) {
+			logger.info("version "+version);
+
 			if (versionProperty != null && versionProperty.isPresent()) {	//set named property
 				final String propName = versionProperty.get();
-				System.out.println("setting property "+propName);
+				logger.debug("setting property "+propName);
 				getProject().getExtensions().add(propName, version);
 			}
 			else {	//set project version
+				logger.debug("setting project version");
 				getProject().setVersion(version);
 			}
 		}
