@@ -2,12 +2,23 @@ plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.10.0'
     id 'de.highbyte_le.semver' version '1.0'
+    id 'maven'
+    id 'groovy'
 }
 
 group 'de.highbyte_le'
 sourceCompatibility = 1.8
 
 jar.dependsOn readSemVer
+
+sourceSets {
+    functionalTests {
+        groovy.srcDir file('src/funcTest/groovy')
+        resources.srcDir file('src/funcTest/resources')
+        compileClasspath += sourceSets.main.output + configurations.testRuntime
+        runtimeClasspath += output + compileClasspath
+    }
+}
 
 gradlePlugin {
     plugins {
@@ -16,6 +27,7 @@ gradlePlugin {
             implementationClass = 'de.highbyte_le.semver.SemVerPlugin'
         }
     }
+    testSourceSets sourceSets.functionalTests
 }
 
 pluginBundle {
@@ -34,8 +46,22 @@ pluginBundle {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile('org.spockframework:spock-core:1.1-groovy-2.4') {
+        exclude group: 'org.codehaus.groovy'
+    }
 }
+
+
+task functionalTests(type: Test) {
+    description = 'Runs the functional tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.functionalTests.output.classesDirs
+    classpath = sourceSets.functionalTests.runtimeClasspath
+    mustRunAfter test
+}
+check.dependsOn functionalTests
