@@ -17,11 +17,23 @@ import java.util.regex.Pattern;
 public class ReadSemVerTask extends DefaultTask {
 	private RegularFileProperty semverPath = getProject().getLayout().fileProperty();
 
+	/**
+	 * the name of the property to set
+	 */
+	private Property<String> versionProperty;
+
 	@TaskAction
 	public void applyVersion() throws IOException {
 		final String version = readSemVer(semverPath.get().getAsFile());
-		if (version != null && !version.isEmpty())
-			getProject().setVersion(version);
+		if (version != null && !version.isEmpty()) {
+			if (versionProperty != null && versionProperty.isPresent()) {	//set named property
+				String propName = versionProperty.get();
+				getProject().getExtensions().add(propName, version);
+			}
+			else {	//set project version
+				getProject().setVersion(version);
+			}
+		}
 	}
 
 	void setSemverPath(RegularFileProperty semverPath) {
@@ -30,6 +42,13 @@ public class ReadSemVerTask extends DefaultTask {
 
 	void setSemverPath(RegularFile semverPath) {
 		this.semverPath.set(semverPath);
+	}
+
+	/**
+	 * the name of the project extra property that is set with the read version
+	 */
+	public void setVersionProperty(Property<String> versionProperty) {
+		this.versionProperty = versionProperty;
 	}
 
 	String readSemVer(File semverFile) throws IOException {
