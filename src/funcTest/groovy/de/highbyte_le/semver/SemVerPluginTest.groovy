@@ -85,4 +85,28 @@ class SemVerPluginTest extends Specification {
         result.output.contains("3.2.1-SNAPSHOT")
         result.task(":readSemVer").outcome == SUCCESS
     }
+
+    def "can successfully configure version property through extension and verify it"() {
+        buildFile << """
+            semver {
+                versionProperty = 'foo'
+            }
+            task printVersion {
+                doLast { println(project.foo) }
+            }
+            printVersion.dependsOn readSemVer
+        """
+
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments('printVersion')
+                .withPluginClasspath()
+                .build()
+
+        then:
+        result.output.contains("1.2.3")
+        result.task(":readSemVer").outcome == SUCCESS
+        result.task(":printVersion").outcome == SUCCESS
+    }
 }

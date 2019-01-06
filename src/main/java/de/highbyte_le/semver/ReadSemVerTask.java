@@ -27,7 +27,8 @@ public class ReadSemVerTask extends DefaultTask {
 		final String version = readSemVer(semverPath.get().getAsFile());
 		if (version != null && !version.isEmpty()) {
 			if (versionProperty != null && versionProperty.isPresent()) {	//set named property
-				String propName = versionProperty.get();
+				final String propName = versionProperty.get();
+				System.out.println("setting property "+propName);
 				getProject().getExtensions().add(propName, version);
 			}
 			else {	//set project version
@@ -47,7 +48,7 @@ public class ReadSemVerTask extends DefaultTask {
 	/**
 	 * the name of the project extra property that is set with the read version
 	 */
-	public void setVersionProperty(Property<String> versionProperty) {
+	void setVersionProperty(Property<String> versionProperty) {
 		this.versionProperty = versionProperty;
 	}
 
