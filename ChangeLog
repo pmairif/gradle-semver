@@ -1,0 +1,4 @@
+1.1:
+- option to read version to named property
+- logging
+- functional tests
