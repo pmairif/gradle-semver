@@ -33,7 +33,7 @@ plugins {
 jar.dependsOn readSemVer
 ```
 
-## Configuration
+### Configuration
 
 The .semver file is searched in the project directory. This is configurable.
 If you want to use that from the parent directory:
@@ -54,6 +54,27 @@ task printVersion {
 }
 printVersion.dependsOn readSemVer
 ``` 
+
+### Function Call
+
+Sometimes it's necessary to read the version during configuration phase. Then it's more appropriate to
+call a function:
+```gradle
+import de.highbyte_le.semver.ReadSemVer
+task printVersion {
+    version = new ReadSemVer(project).read()
+    doLast {
+        println version
+    }
+}
+```
+
+It's also possible to read not the default semver file. Files are references relative to the
+project directory:
+```gradle
+version = new ReadSemVer(project).read('.semver2')
+```
+ 
 
 ## License
 
