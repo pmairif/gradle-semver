@@ -1,5 +1,8 @@
 package de.highbyte_le.semver;
 
+import org.gradle.api.Project;
+import org.gradle.api.file.RegularFile;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -9,7 +12,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ReadSemVer {
-    String readSemVer(File semverFile) throws IOException {
+    private final Project project;
+
+    public ReadSemVer(Project project) {
+        this.project = project;
+    }
+
+    public String read() throws IOException {
+        return read(".semver");
+    }
+
+    public String read(String semverFile) throws IOException {
+        final RegularFile file = project.getLayout().getProjectDirectory().file(semverFile);
+        return read(file.getAsFile());
+    }
+
+    public static String read(File semverFile) throws IOException {
         if (!semverFile.exists())
             return "";
 
@@ -19,7 +37,7 @@ public class ReadSemVer {
         }
     }
 
-    String versionString(Properties props) {
+    static String versionString(Properties props) {
         String ver = String.format("%s.%s.%s", props.get("major"), props.get("minor"), props.get("patch"));
 
         if (props.containsKey("special"))
@@ -27,7 +45,7 @@ public class ReadSemVer {
         return ver;
     }
 
-    Properties readProperties(BufferedReader reader) throws IOException {
+    static Properties readProperties(BufferedReader reader) throws IOException {
         String line;
         Properties props = new Properties();
         while ((line = reader.readLine()) != null) {

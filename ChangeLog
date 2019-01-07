@@ -1,3 +1,6 @@
+1.2:
+- functions to read semver without using tasks
+
 1.1:
 - option to read version to named property
 - logging

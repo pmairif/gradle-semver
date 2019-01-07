@@ -1,5 +1,7 @@
 package de.highbyte_le.semver;
 
+import org.gradle.api.Project;
+import org.gradle.testfixtures.ProjectBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +18,8 @@ public class ReadSemVerTest {
 
     @Before
     public void setUp() {
-        semVer = new ReadSemVer();
+        Project project = ProjectBuilder.builder().withProjectDir(new File("test-data")).build();
+        semVer = new ReadSemVer(project);
     }
 
     @Test
@@ -26,7 +29,7 @@ public class ReadSemVerTest {
         properties.setProperty("minor", "0");
         properties.setProperty("patch", "2");
 
-        assertEquals("1.0.2", semVer.versionString(properties));
+        assertEquals("1.0.2", ReadSemVer.versionString(properties));
     }
 
     @Test
@@ -37,7 +40,7 @@ public class ReadSemVerTest {
         properties.setProperty("patch", "0");
         properties.setProperty("special", "SNAPSHOT");
 
-        assertEquals("2.1.0-SNAPSHOT", semVer.versionString(properties));
+        assertEquals("2.1.0-SNAPSHOT", ReadSemVer.versionString(properties));
     }
 
     @Test
@@ -56,7 +59,7 @@ public class ReadSemVerTest {
         expected.setProperty("special", "SNAPSHOT");
 
         try (BufferedReader reader = new BufferedReader(new StringReader(semver))) {
-            final Properties properties = semVer.readProperties(reader);
+            final Properties properties = ReadSemVer.readProperties(reader);
             assertEquals(expected, properties);
         }
     }
@@ -64,12 +67,17 @@ public class ReadSemVerTest {
     @Test
     public void readSemVerFile() throws IOException {
         File semverFile = new File("test-data/semver-sample");
-        assertEquals("9.0.10", semVer.readSemVer(semverFile));
+        assertEquals("9.0.10", ReadSemVer.read(semverFile));
+    }
+
+    @Test
+    public void readSemVerString() throws IOException {
+        assertEquals("9.0.10", semVer.read("semver-sample"));
     }
 
     @Test
     public void readSemVerFileNotFound() throws IOException {
         File semverFile = new File("test-data/not-present");	//file does not exists
-        assertEquals("", semVer.readSemVer(semverFile));
+        assertEquals("", ReadSemVer.read(semverFile));
     }
 }

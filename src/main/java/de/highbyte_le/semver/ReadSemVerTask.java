@@ -22,7 +22,7 @@ public class ReadSemVerTask extends DefaultTask {
 
 	@TaskAction
 	public void applyVersion() throws IOException {
-		final String version = new ReadSemVer().readSemVer(semverPath.get().getAsFile());
+		final String version = ReadSemVer.read(semverPath.get().getAsFile());
 		if (version != null && !version.isEmpty()) {
 			logger.info("version "+version);
 
@@ -52,5 +52,4 @@ public class ReadSemVerTask extends DefaultTask {
 	void setVersionProperty(Property<String> versionProperty) {
 		this.versionProperty = versionProperty;
 	}
-
 }
