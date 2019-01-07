@@ -109,4 +109,46 @@ class SemVerPluginTest extends Specification {
         result.task(":readSemVer").outcome == SUCCESS
         result.task(":printVersion").outcome == SUCCESS
     }
+
+    def "use function without task to read default semver file"() {
+        buildFile << """
+            task printVersion {
+                doLast { 
+                   println new de.highbyte_le.semver.ReadSemVer(project).read()
+               }
+            }
+        """
+
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments('printVersion')
+                .withPluginClasspath()
+                .build()
+
+        then:
+        result.output.contains("1.2.3")
+        result.task(":printVersion").outcome == SUCCESS
+    }
+
+    def "use function without task to read alternative semver file"() {
+        buildFile << """
+            task printVersion {
+                doLast { 
+                   println new de.highbyte_le.semver.ReadSemVer(project).read('.semver2')
+               }
+            }
+        """
+
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir.root)
+                .withArguments('printVersion')
+                .withPluginClasspath()
+                .build()
+
+        then:
+        result.output.contains("3.2.1-SNAPSHOT")
+        result.task(":printVersion").outcome == SUCCESS
+    }
 }
