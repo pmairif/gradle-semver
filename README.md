@@ -11,7 +11,7 @@ or another task that needs the project version to be set:
 
 ```gradle
 plugins {
-    id 'de.highbyte_le.semver' version '1.2.0'
+    id 'de.highbyte_le.semver' version '1.3.1'
 }
 
 task printVersion {
@@ -27,7 +27,7 @@ For a java build that would be:
 ```gradle
 plugins {
     id 'java'
-    id 'de.highbyte_le.semver' version '1.2.0'
+    id 'de.highbyte_le.semver' version '1.3.1'
 }
 
 jar.dependsOn readSemVer
@@ -77,13 +77,12 @@ version = new ReadSemVer(project).read('.semver2')
  
 ## Versions
 
-Use 1.2.0 for Gradle 4 and 1.3.0 for Gradle >= 5.
 Depending on the gradle version, use the following plugin version:
 
 |gradle|plugin|
 |------|------|
 |4     | 1.2.0|
-|5 or greater| 1.3.0|
+|5 or greater| 1.3.1|
 
 
 ## License
