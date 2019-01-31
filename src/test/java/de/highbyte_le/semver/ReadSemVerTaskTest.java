@@ -29,7 +29,7 @@ public class ReadSemVerTaskTest {
 
 	@Test
 	public void applyVersion() throws IOException {
-		final RegularFileProperty fileProperty = project.getLayout().fileProperty();
+		final RegularFileProperty fileProperty = project.getObjects().fileProperty();
 		//gradle project directory is somewhere - we need an absolute file path to get the one from this project
 		fileProperty.set(new File("test-data/semver-sample").getAbsoluteFile());
 		task.setSemverPath(fileProperty);
@@ -41,7 +41,7 @@ public class ReadSemVerTaskTest {
 
 	@Test
 	public void applyExtraProperty() throws IOException {
-		final RegularFileProperty fileProperty = project.getLayout().fileProperty();
+		final RegularFileProperty fileProperty = project.getObjects().fileProperty();
 		//gradle project directory is somewhere - we need an absolute file path to get the one from this project
 		fileProperty.set(new File("test-data/semver-sample").getAbsoluteFile());
 		task.setSemverPath(fileProperty);

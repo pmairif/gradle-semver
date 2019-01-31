@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ReadSemVerTask extends DefaultTask {
 	private static final Logger logger =  LoggerFactory.getLogger(ReadSemVerTask.class);
 
-	private RegularFileProperty semverPath = getProject().getLayout().fileProperty();
+	private RegularFileProperty semverPath = getProject().getObjects().fileProperty();
 
 	/**
 	 * the name of the property to set
