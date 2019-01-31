@@ -75,6 +75,16 @@ project directory:
 version = new ReadSemVer(project).read('.semver2')
 ```
  
+## Versions
+
+Use 1.2.0 for Gradle 4 and 1.3.0 for Gradle >= 5.
+Depending on the gradle version, use the following plugin version:
+
+|gradle|plugin|
+|------|------|
+|4     | 1.2.0|
+|5 or greater| 1.3.0|
+
 
 ## License
 
